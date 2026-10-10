@@ -3,21 +3,12 @@
  * Ensures the app functions completely offline without internet or server access.
  */
 
-const CACHE_NAME = 'haven-mesh-v1';
-const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon-192.svg',
-  '/icon-512.svg'
-];
+const CACHE_NAME = 'haven-mesh-v2';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => self.skipWaiting())
-  );
+  // Skip precaching specific paths — use runtime caching instead
+  // so the SW works regardless of deployment sub-path
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener('activate', (event) => {
@@ -35,7 +26,7 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Offline-first caching strategy
+  // Offline-first caching strategy with runtime caching
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -53,7 +44,7 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         // Fallback to cached index.html for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match(new Request(self.registration.scope));
         }
       });
     })
