@@ -12,8 +12,8 @@ const STORAGE_KEY_IDENTITY = 'haven_mesh_identity_v1';
 const STORAGE_KEY_PEERS = 'haven_mesh_peers_v1';
 
 const TACTICAL_CALLSIGNS = [
-  'VALKYRIE', 'PHOENIX', 'AEGIS', 'SPECTRE', 'NEXUS', 
-  'CITADEL', 'VANGUARD', 'ORION', 'SHADOW', 'TITAN'
+  'Helper', 'Phoenix', 'Guardian', 'Scout', 'Beacon', 
+  'Compass', 'Relay', 'Spark', 'Bridge', 'Shield'
 ];
 
 export class MeshEngine {
@@ -352,15 +352,15 @@ export class MeshEngine {
    * Simulates realistic store-and-forward peer movements and transmissions
    */
   simulateMeshRelayCascade(originPacket) {
-    // Pick 2-3 surrounding nodes to simulate packet hops
-    const relayNodes = ['MEDIC-04', 'CITADEL-01', 'SCOUT-19'];
+    // Pick 2-3 surrounding peers to simulate packet hops
+    const relayPeers = this.peers.slice(0, Math.min(3, this.peers.length));
     
-    relayNodes.forEach((nodeCallsign, idx) => {
+    relayPeers.forEach((targetPeer, idx) => {
       const delay = (idx + 1) * 2200;
       setTimeout(() => {
         this.packetStats.relayed += 1;
         // Jitter peer distance/RSSI to reflect crowd motion
-        const peer = this.peers.find(p => p.callsign === nodeCallsign);
+        const peer = this.peers.find(p => p.id === targetPeer.id);
         if (peer) {
           peer.lastSeen = Date.now();
           peer.rssi = Math.max(-95, Math.min(-45, peer.rssi + (Math.random() > 0.5 ? 2 : -2)));
@@ -376,7 +376,7 @@ export class MeshEngine {
       this.peers = this.peers.map(p => ({
         ...p,
         rssi: Math.max(-95, Math.min(-42, p.rssi + Math.floor((Math.random() - 0.5) * 4))),
-        lastSeen: p.lastSeen + 1000
+        lastSeen: Date.now() - Math.floor(Math.random() * 5000)
       }));
       this.notify();
     }, 4000);

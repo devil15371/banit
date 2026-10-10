@@ -7,11 +7,11 @@ export default function NetworkTopologyModal({ isOpen, onClose, peers, identity 
   if (!isOpen) return null;
 
   const NODES_TOPOLOGY = [
-    { id: 'you', label: identity?.callsign || 'YOU', role: 'Origin Node', x: 10, y: 50, isYou: true },
-    { id: 'hop1', label: 'HAVEN-RELAY', role: 'Hotspot Node (Hop 1)', x: 35, y: 30 },
-    { id: 'hop2', label: 'SCOUT-19', role: 'BLE Relay (Hop 2)', x: 62, y: 35 },
-    { id: 'hop3', label: 'MEDIC-04', role: 'Field Medic (Hop 3)', x: 88, y: 55, isDest: true },
-    { id: 'mule', label: 'CITADEL-01', role: 'Data Mule (Walking Node)', x: 50, y: 78 }
+    { id: 'you', label: identity?.callsign || 'YOU', role: 'Your Phone', x: 10, y: 50, isYou: true },
+    { id: 'hop1', label: 'Nearby Hotspot', role: 'Wi-Fi Relay (Phone 1)', x: 35, y: 30 },
+    { id: 'hop2', label: 'Volunteer Scout', role: 'Bluetooth Relay (Phone 2)', x: 62, y: 35 },
+    { id: 'hop3', label: 'Dr. Sarah (Medic)', role: 'Destination (Phone 3)', x: 88, y: 55, isDest: true },
+    { id: 'mule', label: 'Walking Person', role: 'Carrying Messages in Pocket', x: 50, y: 78 }
   ];
 
   const triggerSimulation = () => {

@@ -76,10 +76,7 @@ export default function DecoyCalculator({ onUnlockMesh, onDuressWipe }) {
         </div>
         <button 
           className="decoy-emergency-unlock-hint"
-          onClick={() => {
-            setDisplay(MASTER_PIN);
-            setTimeout(() => handleEqual(), 300);
-          }}
+          onClick={() => onUnlockMesh()}
           title="Return to Haven app"
         >
           <KeyRound size={13} />
@@ -130,12 +127,7 @@ export default function DecoyCalculator({ onUnlockMesh, onDuressWipe }) {
 
         <div className="decoy-security-info">
           <div className="sec-item">
-            <span className="sec-label">To return to app:</span>
-            <code>Type 7378 and press =</code>
-          </div>
-          <div className="sec-item duress">
-            <span className="sec-label">Emergency clear code:</span>
-            <code>Type 911 and press =</code>
+            <span className="sec-label">Tap "Return to App" above or type your code and press =</span>
           </div>
         </div>
       </div>

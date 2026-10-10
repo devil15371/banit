@@ -11,7 +11,7 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
   const [streamKey, setStreamKey] = useState('yt-live-crisis-key-xxxx');
   const [streamTarget, setStreamTarget] = useState('YOUTUBE'); // 'YOUTUBE' | 'TWITCH' | 'REDDIT'
   const [cameraError, setCameraError] = useState(null);
-  const [evaporateNotice, setEvaporateNotice] = useState(false);
+
   
   const videoRef = useRef(null);
   const mediaStreamRef = useRef(null);
@@ -60,7 +60,7 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
     if (!mediaStreamRef.current) return;
     setIsStreaming(true);
     setStreamChunksCount(0);
-    setEvaporateNotice(true);
+
 
     try {
       // Chunk live video into 2-second low-bitrate bursts

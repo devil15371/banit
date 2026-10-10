@@ -41,7 +41,7 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
     return () => {
       stopCamera();
     };
-  }, [isOpen, activeTab, facingMode]);
+  }, [isOpen, activeTab, facingMode, captureMode]);
 
   useEffect(() => {
     const unsub = evidenceVault.subscribe(loadVaultItems);

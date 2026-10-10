@@ -12,7 +12,7 @@ createRoot(document.getElementById('root')).render(
 // Register service worker for offline installation on Android and iOS
 if ('serviceWorker' in navigator && !window.location.hostname.includes('localhost')) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch((err) => {
+    navigator.serviceWorker.register('./sw.js').catch((err) => {
       console.log('SW registration error:', err);
     });
   });

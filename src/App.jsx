@@ -231,7 +231,7 @@ export default function App() {
       {/* Top Status Bar */}
       <header className="tactical-navbar">
         <div className="nav-brand-section">
-          <div className="brand-logo-wrap" onClick={() => setInDecoyMode(true)} title="Tap 3 times or press Esc twice to hide app with calculator">
+          <div className="brand-logo-wrap" onClick={() => setInDecoyMode(true)} title="Tap to hide app with calculator">
             <Shield className="brand-icon" size={20} />
             <div className="brand-ping-dot"></div>
           </div>
@@ -397,7 +397,7 @@ export default function App() {
               {/* Quick Hide Notice */}
               <div className="field-guide-card">
                 <div className="guide-title">Quick Hide Shortcut:</div>
-                <p>Tap the shield logo 3 times or press <code>Escape</code> twice if someone checks your phone to instantly show a normal calculator.</p>
+                <p>Tap the shield logo or press <code>Escape</code> twice if someone checks your phone to instantly show a normal calculator.</p>
               </div>
             </aside>
 
@@ -405,7 +405,7 @@ export default function App() {
             <main className="messages-container">
               <div className="channel-header-bar">
                 <div className="ch-title-wrap">
-                  <span className="active-ch-name">{selectedChannel}</span>
+                  <span className="active-ch-name">{CHANNELS.find(c => c.id === selectedChannel)?.label || selectedChannel}</span>
                   <span className="active-ch-sub">{getChannelSubtitle(selectedChannel)}</span>
                 </div>
                 <div className="crypto-badge">

@@ -94,8 +94,8 @@ export default function RadarScreen({ peers, onDirectPing }) {
                 <div className="detail-item">
                   <Signal size={14} />
                   <div>
-                    <div className="detail-label">Signal (RSSI)</div>
-                    <div className="detail-val">{selectedPeer.rssi} dBm</div>
+                    <div className="detail-label">Signal Strength</div>
+                    <div className="detail-val">{selectedPeer.rssi > -55 ? '🟢 Strong' : selectedPeer.rssi > -75 ? '🟡 Medium' : '🔴 Weak'}</div>
                   </div>
                 </div>
 
@@ -118,7 +118,7 @@ export default function RadarScreen({ peers, onDirectPing }) {
                 <div className="detail-item">
                   <Battery size={14} />
                   <div>
-                    <div className="detail-label">Node Battery</div>
+                    <div className="detail-label">Phone Battery</div>
                     <div className="detail-val">{selectedPeer.battery}%</div>
                   </div>
                 </div>
@@ -127,7 +127,7 @@ export default function RadarScreen({ peers, onDirectPing }) {
               {selectedPeer.isEmergency && (
                 <div className="peer-emergency-alert">
                   <AlertTriangle size={15} />
-                  <span>EMERGENCY BEACON ACTIVE ON THIS NODE</span>
+                  <span>THIS PERSON SENT AN EMERGENCY ALERT</span>
                 </div>
               )}
 
@@ -135,13 +135,13 @@ export default function RadarScreen({ peers, onDirectPing }) {
                 className="btn-ping-peer"
                 onClick={() => onDirectPing && onDirectPing(selectedPeer)}
               >
-                <span>Send Encrypted Ping</span>
+                <span>Send a Message</span>
                 <ChevronRight size={14} />
               </button>
             </div>
           ) : (
             <div className="peer-list-container">
-              <div className="peer-list-header">Detected Mesh Nodes</div>
+              <div className="peer-list-header">People Nearby</div>
               <div className="peer-list-scroll">
                 {peers.map(peer => (
                   <div 
@@ -158,7 +158,7 @@ export default function RadarScreen({ peers, onDirectPing }) {
                     </div>
                     <div className="row-right">
                       <div className="row-dist">~{peer.distanceMeters}m</div>
-                      <div className="row-rssi">{peer.rssi} dBm</div>
+                      <div className="row-rssi">{peer.rssi > -55 ? '🟢' : peer.rssi > -75 ? '🟡' : '🔴'}</div>
                     </div>
                   </div>
                 ))}

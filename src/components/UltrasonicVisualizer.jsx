@@ -9,8 +9,8 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
   const [progress, setProgress] = useState(0);
   const [textInput, setTextInput] = useState('SOS: PATEL CHOWK SAFE');
   const [statusLog, setStatusLog] = useState([
-    'Acoustic Modem standby. FSK modulation ready.',
-    'Solves 2.4 GHz RF Jamming by operating entirely on mechanical sound waves.'
+    'Sound messenger ready.',
+    'Works even when Wi-Fi and Bluetooth are blocked.'
   ]);
   
   const canvasRef = useRef(null);
@@ -58,7 +58,7 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
     setIsTransmitting(true);
     setProgress(0);
 
-    const logMsg = `[TX] Transmitting "${textInput}" via ${isAudible ? 'Audible FSK (1.9kHz)' : 'Ultrasonic (19.2kHz)'}...`;
+    const logMsg = `Sending "${textInput}" as ${isAudible ? 'audible beeps' : 'silent high-pitch sound'}...`;
     setStatusLog(prev => [logMsg, ...prev.slice(0, 5)]);
 
     const success = await acousticModem.transmit(textInput, (pct) => {
@@ -67,12 +67,12 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
 
     setIsTransmitting(false);
     if (success) {
-      setStatusLog(prev => [`[SUCCESS] Acoustic packet transmitted successfully!`, ...prev.slice(0, 5)]);
+      setStatusLog(prev => [`✅ Sound message sent successfully!`, ...prev.slice(0, 5)]);
       if (onAcousticPacketSent) {
         onAcousticPacketSent(textInput);
       }
     } else {
-      setStatusLog(prev => [`[ERROR] Acoustic transmission failed.`, ...prev.slice(0, 5)]);
+      setStatusLog(prev => [`❌ Couldn't send — try again.`, ...prev.slice(0, 5)]);
     }
   };
 
@@ -80,21 +80,21 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
     if (isListening) {
       acousticModem.stopListening();
       setIsListening(false);
-      setStatusLog(prev => ['[RX] Acoustic listener stopped.', ...prev.slice(0, 5)]);
+      setStatusLog(prev => ['Stopped listening.', ...prev.slice(0, 5)]);
     } else {
       const ok = await acousticModem.startListening();
       if (ok) {
         setIsListening(true);
-        setStatusLog(prev => ['[RX] Live microphone listener active. Monitoring FSK bands.', ...prev.slice(0, 5)]);
+        setStatusLog(prev => ['🎤 Listening for nearby sound messages...', ...prev.slice(0, 5)]);
       } else {
-        setStatusLog(prev => ['[WARN] Microphone access denied or unavailable in this browser.', ...prev.slice(0, 5)]);
+        setStatusLog(prev => ['⚠️ Microphone access denied. Please allow microphone permission.', ...prev.slice(0, 5)]);
       }
     }
   };
 
   const handleSiren = () => {
     acousticModem.playSosSiren();
-    setStatusLog(prev => ['[ALARM] Morse SOS Siren (... --- ...) synthesized on speakers!', ...prev.slice(0, 5)]);
+    setStatusLog(prev => ['🔊 SOS alarm playing!', ...prev.slice(0, 5)]);
   };
 
   return (
@@ -102,10 +102,10 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
       <div className="modem-header">
         <div className="modem-title-box">
           <Activity className="icon-pulse" size={18} />
-          <span className="modem-title">ACOUSTIC / ULTRASONIC MODEM</span>
+          <span className="modem-title">SOUND MESSENGER</span>
           <span className="anti-jam-badge">
             <ShieldCheck size={12} />
-            ANTI-JAMMING FALLBACK
+            WORKS EVEN IF JAMMED
           </span>
         </div>
 
