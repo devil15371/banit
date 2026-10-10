@@ -595,12 +595,70 @@ body {
   word-break: break-word;
 }
 
+.dot-pulse-red {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-red);
+  box-shadow: 0 0 8px var(--color-red);
+  display: inline-block;
+  animation: pulse-ring 1.5s infinite;
+}
+
+.special-msg-card {
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 4px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.special-msg-card.live-card {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.special-msg-card.evidence-card {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.special-msg-card.alert-card {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.special-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #fff;
+}
+
+.special-card-text {
+  font-size: 0.88rem;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.special-card-footer {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 6px;
+  margin-top: 2px;
+}
+
 .sos-priority-footer {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.76rem;
   color: var(--color-red);
   margin-top: 8px;
   padding-top: 6px;

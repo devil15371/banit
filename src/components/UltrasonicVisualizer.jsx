@@ -116,7 +116,7 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
             title="Audible frequencies allow you to hear the data chirps"
           >
             <Volume2 size={14} />
-            <span>Audible Demo (1.9 kHz)</span>
+            <span>Beeps You Can Hear</span>
           </button>
           <button 
             className={`btn-mode-toggle ${!isAudible ? 'active' : ''}`}
@@ -124,21 +124,21 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
             title="Inaudible ultrasonic tones (18-20 kHz)"
           >
             <VolumeX size={14} />
-            <span>Ultrasonic Inaudible (19.2 kHz)</span>
+            <span>Silent Ultrasonic (High Pitch)</span>
           </button>
         </div>
       </div>
 
       <div className="modem-explainer">
-        <strong>Why this defeats RF Jammers:</strong> Police signal jammers blast the 2.4 GHz radio spectrum to disable Bluetooth and Wi-Fi. This modem converts packets into physical sound waves transmitted through phone speakers and decoded by neighboring phone microphones, bypassing radio jamming entirely.
+        <strong>Send Messages Using Sound Waves:</strong> If Wi-Fi or Bluetooth are jammed, this feature turns your message into sound chirps from your phone's speaker. Nearby phones listen with their microphone and read the message instantly.
       </div>
 
-      {/* Real-time FFT Audio Spectrum */}
+      {/* Real-time Audio Spectrum */}
       <div className="spectrum-box">
         <div className="spectrum-label-row">
-          <span>REAL-TIME ACOUSTIC SPECTRUM (FFT)</span>
+          <span>LIVE SOUND WAVE VISUALIZER</span>
           <span className={isListening ? 'listening-tag' : 'idle-tag'}>
-            {isListening ? 'MIC LISTENING LIVE' : 'SPECTRUM IDLE'}
+            {isListening ? 'LISTENING VIA MICROPHONE' : 'STANDBY'}
           </span>
         </div>
         <canvas ref={canvasRef} width={500} height={70} className="spectrum-canvas"></canvas>
@@ -152,7 +152,7 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
             className="tx-input"
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
-            placeholder="Enter emergency packet text to transmit over sound..."
+            placeholder="Type a short emergency message to send via sound..."
             disabled={isTransmitting}
           />
           <button 
@@ -161,7 +161,7 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
             disabled={isTransmitting}
           >
             <Send size={15} />
-            <span>{isTransmitting ? `Transmitting (${progress}%)` : 'Chirp Over Sound'}</span>
+            <span>{isTransmitting ? `Sending (${progress}%)` : '🔊 Send via Sound'}</span>
           </button>
         </div>
 
@@ -177,19 +177,19 @@ export default function UltrasonicVisualizer({ onAcousticPacketSent }) {
             onClick={toggleMicListening}
           >
             {isListening ? <MicOff size={15} /> : <Mic size={15} />}
-            <span>{isListening ? 'Stop Mic Listener' : 'Start Mic Listener'}</span>
+            <span>{isListening ? 'Stop Mic Listener' : 'Listen with Microphone'}</span>
           </button>
 
           <button className="btn-aux btn-siren" onClick={handleSiren}>
             <AlertOctagon size={15} />
-            <span>Broadcast Audio Morse SOS</span>
+            <span>🔊 Play Loud SOS Siren</span>
           </button>
         </div>
       </div>
 
       {/* Modem Activity Log */}
       <div className="modem-log-box">
-        <div className="log-title">Modem Telemetry</div>
+        <div className="log-title">Recent Sound Activity</div>
         <div className="log-list">
           {statusLog.map((log, idx) => (
             <div key={idx} className="log-line">{log}</div>

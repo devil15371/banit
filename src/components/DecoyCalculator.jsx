@@ -72,7 +72,7 @@ export default function DecoyCalculator({ onUnlockMesh, onDuressWipe }) {
       <div className="decoy-header-bar">
         <div className="decoy-status-pill">
           <Lock size={12} />
-          <span>STEALTH DECOY ACTIVE</span>
+          <span>CALCULATOR (DISGUISE MODE)</span>
         </div>
         <button 
           className="decoy-emergency-unlock-hint"
@@ -80,10 +80,10 @@ export default function DecoyCalculator({ onUnlockMesh, onDuressWipe }) {
             setDisplay(MASTER_PIN);
             setTimeout(() => handleEqual(), 300);
           }}
-          title="Direct unlock for demonstration"
+          title="Return to Haven app"
         >
           <KeyRound size={13} />
-          <span>Quick Unlock (Demo)</span>
+          <span>Return to App</span>
         </button>
       </div>
 
@@ -98,7 +98,7 @@ export default function DecoyCalculator({ onUnlockMesh, onDuressWipe }) {
         {wipeNotice && (
           <div className="duress-wipe-banner">
             <ShieldAlert size={14} />
-            <span>CRYPTOGRAPHIC KEYS DESTROYED. MEMORY ZEROED.</span>
+            <span>ALL MESSAGES & DATA ERASED SAFELY</span>
           </div>
         )}
 
@@ -130,12 +130,12 @@ export default function DecoyCalculator({ onUnlockMesh, onDuressWipe }) {
 
         <div className="decoy-security-info">
           <div className="sec-item">
-            <span className="sec-label">Unlock PIN:</span>
-            <code>{MASTER_PIN}=</code>
+            <span className="sec-label">To return to app:</span>
+            <code>Type 7378 and press =</code>
           </div>
           <div className="sec-item duress">
-            <span className="sec-label">Duress Wipe PIN:</span>
-            <code>{DURESS_PIN}=</code>
+            <span className="sec-label">Emergency clear code:</span>
+            <code>Type 911 and press =</code>
           </div>
         </div>
       </div>

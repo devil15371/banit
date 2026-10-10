@@ -219,7 +219,7 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
     chunks.forEach((chunk, index) => {
       setTimeout(() => {
         meshEngine.broadcastMessage(
-          `[SWARM_EVIDENCE_BURST] ${evidenceItem.title} Chunk ${index + 1}/${chunks.length}`,
+          `📸 Backing up photo/video proof across nearby phones (part ${index + 1}/${chunks.length})`,
           '#all-mesh',
           'HIGH',
           ['EVIDENCE_SWARM'],
@@ -256,8 +256,8 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
           <div className="cam-title-box">
             <Camera size={20} className="icon-emerald" />
             <div>
-              <div className="modal-title">EVIDENCE RECORDER & SWARM VAULT</div>
-              <div className="modal-subtitle">Auto-mirrored across peer phones: Evidence survives device confiscation</div>
+              <div className="modal-title">SAFE CAMERA & EMERGENCY BACKUP</div>
+              <div className="modal-subtitle">Photos & videos are saved to nearby phones so they cannot be deleted even if your phone is taken</div>
             </div>
           </div>
 
@@ -267,13 +267,13 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
                 className={`cam-tab-btn ${activeTab === 'capture' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('capture'); startCamera(); }}
               >
-                Capture
+                Camera
               </button>
               <button 
                 className={`cam-tab-btn ${activeTab === 'vault' ? 'active' : ''}`}
                 onClick={() => { setActiveTab('vault'); stopCamera(); loadVaultItems(); }}
               >
-                Swarm Vault ({myMedia.length + swarmMedia.length})
+                Saved Gallery ({myMedia.length + swarmMedia.length})
               </button>
             </div>
             <button className="btn-modal-close" onClick={onClose}><X size={18} /></button>
@@ -294,7 +294,7 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
                 <div className="viewfinder-inner">
                   <video ref={videoRef} autoPlay playsInline muted className="viewfinder-video" />
 
-                  {/* Tactical Crosshair Overlay */}
+                  {/* Viewfinder Overlay */}
                   <div className="viewfinder-hud">
                     <div className="hud-corner top-left"></div>
                     <div className="hud-corner top-right"></div>
@@ -309,22 +309,20 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
                     )}
 
                     <div className="hud-bottom-telemetry">
-                      <span>FPS: 30</span>
-                      <span>RES: 720p</span>
-                      <span>WATERMARK: ON-DEVICE</span>
+                      <span>AUTO-BACKUP: ACTIVE</span>
                     </div>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Dispersion Banner */}
+            {/* Backup Progress Banner */}
             {dispersionStatus && (
               <div className="dispersion-progress-banner">
                 <div className="dispersion-text">
                   <Share2 size={14} className="icon-pulse" />
                   <span>
-                    DISPERSING EVIDENCE TO {dispersionStatus.peersCount} PEERS: Chunk {dispersionStatus.currentChunk}/{dispersionStatus.totalChunks}
+                    SAVING BACKUP TO {dispersionStatus.peersCount} NEARBY PHONES: Part {dispersionStatus.currentChunk}/{dispersionStatus.totalChunks}
                   </span>
                 </div>
                 <div className="dispersion-bar-bg">
@@ -357,7 +355,7 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
 
               {/* Shutter Button */}
               {captureMode === 'photo' ? (
-                <button className="btn-shutter photo" onClick={takePhoto} title="Capture Photo Evidence">
+                <button className="btn-shutter photo" onClick={takePhoto} title="Take Photo">
                   <div className="shutter-inner photo"></div>
                 </button>
               ) : (
@@ -377,25 +375,25 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
               </button>
             </div>
 
-            {/* 3-Step Architecture Explainer & Panic Bar */}
+            {/* 3-Step Simple Explainer & Disguise Bar */}
             <div className="capture-footer-bar">
               <div className="three-step-pill">
-                <span>1. Stored in App Memory</span>
+                <span>1. Saves on phone</span>
                 <span>•</span>
-                <span>2. Mirrored to Swarm</span>
+                <span>2. Copies to nearby phones</span>
                 <span>•</span>
-                <span>3. Survives Confiscation</span>
+                <span>3. Cannot be lost</span>
               </div>
 
-              <button className="btn-panic-quick" onClick={handlePolicePanic} title="Emergency: Police approaching">
+              <button className="btn-panic-quick" onClick={handlePolicePanic} title="Instantly hide and show a working calculator">
                 <EyeOff size={14} />
-                <span>Police Approaching (Panic to Calculator)</span>
+                <span>Quick Hide (Switch to Calculator)</span>
               </button>
             </div>
           </div>
         )}
 
-        {/* View 2: Swarm Evidence Vault Gallery */}
+        {/* View 2: Evidence Vault Gallery */}
         {activeTab === 'vault' && (
           <div className="vault-gallery-body">
             <div className="vault-subtabs-row">
@@ -404,14 +402,14 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
                 onClick={() => setVaultSubTab('mine')}
               >
                 <HardDrive size={14} />
-                <span>My Captured Evidence ({myMedia.length})</span>
+                <span>Taken by Me ({myMedia.length})</span>
               </button>
               <button 
                 className={`vault-subtab-btn ${vaultSubTab === 'swarm' ? 'active' : ''}`}
                 onClick={() => setVaultSubTab('swarm')}
               >
                 <Users size={14} />
-                <span>Mirrored Peer Evidence ({swarmMedia.length})</span>
+                <span>Saved from Nearby Phones ({swarmMedia.length})</span>
               </button>
             </div>
 
@@ -419,8 +417,8 @@ export default function EvidenceCameraModal({ isOpen, onClose, onPanicToDecoy })
               {(vaultSubTab === 'mine' ? myMedia : swarmMedia).length === 0 ? (
                 <div className="empty-vault-card">
                   <ShieldCheck size={36} className="text-dim" />
-                  <p>No {vaultSubTab === 'mine' ? 'captured' : 'mirrored'} evidence in vault yet.</p>
-                  <span>Photos and videos recorded in the crowd will populate here automatically.</span>
+                  <p>No {vaultSubTab === 'mine' ? 'captured' : 'saved'} photos or videos in gallery yet.</p>
+                  <span>Photos and videos taken in the crowd will show here automatically.</span>
                 </div>
               ) : (
                 (vaultSubTab === 'mine' ? myMedia : swarmMedia).map(item => (

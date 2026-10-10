@@ -22,13 +22,13 @@ export default function RadarScreen({ peers, onDirectPing }) {
       <div className="radar-header">
         <div className="radar-title-group">
           <Radio className="radar-pulse-icon" size={18} />
-          <span className="radar-title">TACTICAL PROXIMITY RADAR</span>
-          <span className="radar-badge">{peers.length} ACTIVE PEERS IN RANGE</span>
+          <span className="radar-title">NEARBY PHONES RADAR</span>
+          <span className="radar-badge">{peers.length} PHONES CONNECTED NEARBY</span>
         </div>
         <div className="radar-legend">
-          <span className="legend-item"><span className="dot dot-emergency"></span> SOS</span>
-          <span className="legend-item"><span className="dot dot-relay"></span> Hotspot Relay</span>
-          <span className="legend-item"><span className="dot dot-ble"></span> BLE Mesh</span>
+          <span className="legend-item"><span className="dot dot-emergency"></span> Emergency SOS</span>
+          <span className="legend-item"><span className="dot dot-relay"></span> Wi-Fi Hotspot</span>
+          <span className="legend-item"><span className="dot dot-ble"></span> Bluetooth</span>
         </div>
       </div>
 

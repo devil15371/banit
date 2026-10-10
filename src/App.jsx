@@ -85,11 +85,112 @@ export default function App() {
   };
 
   const handlePanicWipe = () => {
-    if (window.confirm("CONFIRM ZEROIZATION: This will immediately destroy all encryption keys, message histories, and identity fingerprints on this device.")) {
+    if (window.confirm("CLEAR ALL MESSAGES: This will delete all message history and saved items from this device immediately.")) {
       meshEngine.wipeAllData();
       setWipeAlert(true);
       setTimeout(() => setWipeAlert(false), 3000);
       setInDecoyMode(true); // Jump to decoy
+    }
+  };
+
+  // Helper functions for user-friendly labels
+  const formatTransport = (transport) => {
+    if (!transport) return 'Direct';
+    const t = String(transport).toUpperCase();
+    if (t.includes('HOTSPOT') || t.includes('WI-FI') || t.includes('WIFI')) return 'Wi-Fi';
+    if (t.includes('BLE') || t.includes('BLUETOOTH')) return 'Bluetooth';
+    if (t.includes('ACOUSTIC') || t.includes('ULTRASONIC') || t.includes('SOUND')) return 'Sound Waves';
+    if (t.includes('NOSTR')) return 'Web Backup';
+    return 'Direct';
+  };
+
+  const formatHops = (hops) => {
+    if (!hops || hops === 0 || hops === 1) return 'Direct connection';
+    if (hops === 2) return 'Passed through 1 phone';
+    return `Passed through ${hops - 1} phones`;
+  };
+
+  const formatTag = (tag) => {
+    switch (tag) {
+      case 'LIVE_VIDEO': return '🔴 Live Stream';
+      case 'YOUTUBE': return 'YouTube';
+      case 'REDDIT': return 'Reddit';
+      case 'TWITCH': return 'Twitch';
+      case 'EVIDENCE_SWARM': return '📸 Evidence Backup';
+      case 'DETENTION_ALERT': return '🚨 Safety Alert';
+      case 'MEDICAL':
+      case 'FIRST_AID': return '💊 First Aid';
+      case 'POLICE':
+      case 'BARRICADE': return '🛡️ Police Alert';
+      case 'NET_SHUTDOWN': return '📶 Offline Notice';
+      case 'SOS': return '🚨 Emergency';
+      default: return tag;
+    }
+  };
+
+  const renderMessageContent = (msg) => {
+    const isLiveStream = msg.tags?.includes('LIVE_VIDEO') || msg.text.startsWith('[LIVE_STREAM_BURST]') || msg.text.includes('Live video streaming');
+    const isEvidence = msg.tags?.includes('EVIDENCE_SWARM') || msg.text.startsWith('[SWARM_EVIDENCE_BURST]') || msg.text.includes('Backing up photo/video');
+    const isDetention = msg.tags?.includes('DETENTION_ALERT') || msg.text.startsWith('[EMERGENCY DETENTION]') || msg.text.includes('Streamer closed camera');
+
+    if (isLiveStream) {
+      return (
+        <div className="special-msg-card live-card">
+          <div className="special-card-header">
+            <span className="dot-pulse-red"></span>
+            <strong>🔴 Live Video Streaming to YouTube</strong>
+          </div>
+          <p className="special-card-text">
+            {msg.text.replace(/\[LIVE_STREAM_BURST\]\s*/i, '').replace(/Target:\s*/i, 'Platform: ')}
+          </p>
+          <div className="special-card-footer">
+            <span>Video is hopping phone-to-phone across the crowd to reach YouTube • Not stored on this phone</span>
+          </div>
+        </div>
+      );
+    }
+
+    if (isEvidence) {
+      return (
+        <div className="special-msg-card evidence-card">
+          <div className="special-card-header">
+            <Shield size={14} className="text-emerald" />
+            <strong>📸 Photo/Video Proof Backed Up</strong>
+          </div>
+          <p className="special-card-text">
+            {msg.text.replace(/\[SWARM_EVIDENCE_BURST\]\s*/i, '')}
+          </p>
+          <div className="special-card-footer">
+            <span>Copied safely to nearby phones so it cannot be lost even if this phone is taken</span>
+          </div>
+        </div>
+      );
+    }
+
+    if (isDetention) {
+      return (
+        <div className="special-msg-card alert-card">
+          <div className="special-card-header">
+            <AlertTriangle size={14} className="text-red" />
+            <strong>🚨 Safety Alert: App Disguised</strong>
+          </div>
+          <p className="special-card-text">
+            {msg.text.replace(/\[EMERGENCY DETENTION\]\s*/i, '')}
+          </p>
+        </div>
+      );
+    }
+
+    return <div className="msg-body">{msg.text}</div>;
+  };
+
+  const getChannelSubtitle = (channelId) => {
+    switch (channelId) {
+      case '#all-mesh': return 'Chat with everyone nearby without internet';
+      case '#sos-beacon': return 'Emergency alerts broadcasted to all nearby phones';
+      case '#checkpoints': return 'Police checkpoints, barricades & safe paths';
+      case '#medical-aid': return 'First aid stations, medical supplies & drinking water';
+      default: return 'Broadcast to all nearby phones';
     }
   };
 
@@ -110,10 +211,10 @@ export default function App() {
   });
 
   const CHANNELS = [
-    { id: '#all-mesh', label: 'All Mesh', count: meshData.messages.length },
-    { id: '#sos-beacon', label: '🚨 SOS Beacon', count: meshData.messages.filter(m => m.channel === '#sos-beacon').length },
-    { id: '#checkpoints', label: '🛡️ Checkpoints', count: meshData.messages.filter(m => m.channel === '#checkpoints').length },
-    { id: '#medical-aid', label: '💊 Medical Aid', count: meshData.messages.filter(m => m.channel === '#medical-aid').length }
+    { id: '#all-mesh', label: '💬 Everyone Nearby', count: meshData.messages.length },
+    { id: '#sos-beacon', label: '🚨 Emergency SOS', count: meshData.messages.filter(m => m.channel === '#sos-beacon').length },
+    { id: '#checkpoints', label: '🛡️ Police & Safe Paths', count: meshData.messages.filter(m => m.channel === '#checkpoints').length },
+    { id: '#medical-aid', label: '💊 First Aid & Water', count: meshData.messages.filter(m => m.channel === '#medical-aid').length }
   ];
 
   // If a geohash channel is active that isn't standard, add it to channels list
@@ -127,16 +228,16 @@ export default function App() {
 
   return (
     <div className="haven-app-root">
-      {/* Top Tactical Status Bar */}
+      {/* Top Status Bar */}
       <header className="tactical-navbar">
         <div className="nav-brand-section">
-          <div className="brand-logo-wrap" onClick={() => setInDecoyMode(true)} title="Tap 3 times or press Esc twice for Stealth Decoy">
+          <div className="brand-logo-wrap" onClick={() => setInDecoyMode(true)} title="Tap 3 times or press Esc twice to hide app with calculator">
             <Shield className="brand-icon" size={20} />
             <div className="brand-ping-dot"></div>
           </div>
           <div>
-            <div className="brand-title">HAVEN MESH <span className="brand-version">v2.4</span></div>
-            <div className="brand-sub">ZERO-INFRASTRUCTURE CRISIS NETWORK</div>
+            <div className="brand-title">HAVEN</div>
+            <div className="brand-sub">WORKS WITHOUT INTERNET OR SIM</div>
           </div>
         </div>
 
@@ -144,71 +245,69 @@ export default function App() {
         <div className="nav-telemetry-cluster">
           <div className="telemetry-pill">
             <span className="dot-live"></span>
-            <span className="pill-label">NODE:</span>
+            <span className="pill-label">You:</span>
             <span className="pill-val">{meshData.identity.callsign}</span>
           </div>
 
           <div className="telemetry-pill">
-            <Radio size={13} className="text-emerald" />
-            <span className="pill-label">PEERS:</span>
-            <span className="pill-val">{meshData.peers.length} IN RANGE</span>
+            <Users size={13} className="text-emerald" />
+            <span className="pill-val">{meshData.peers.length} Nearby Phones</span>
           </div>
 
           <div className="telemetry-pill">
-            <Network size={13} className="text-cyan" />
-            <span className="pill-label">RELAY HOPS:</span>
-            <span className="pill-val">{meshData.stats.relayed} PACKETS</span>
+            <Zap size={13} className="text-cyan" />
+            <span className="pill-val">{meshData.stats.relayed} Messages Delivered</span>
           </div>
 
           <div className={`telemetry-pill ${meshData.isWsConnected ? 'hotspot-active' : ''}`}>
             {meshData.isWsConnected ? <Wifi size={13} /> : <WifiOff size={13} />}
-            <span className="pill-val">{meshData.isWsConnected ? 'LOCAL HOTSPOT ACTIVE' : 'BLE MESH MODE'}</span>
+            <span className="pill-val">{meshData.isWsConnected ? 'Wi-Fi Hotspot Connected' : 'Offline Mode (No Internet)'}</span>
           </div>
         </div>
 
-        {/* Tactical Actions */}
+        {/* Action Buttons */}
         <div className="nav-action-buttons">
           <button className="btn-nav-sos" onClick={() => setIsSosOpen(true)}>
             <AlertTriangle size={15} />
-            <span>SOS BEACON</span>
+            <span>🚨 SOS ALERT</span>
           </button>
 
-          <button className="btn-nav-action cam-glow-btn" onClick={() => setIsCameraOpen(true)} title="Capture Photos & Videos with Automatic Swarm Backup">
+          <button className="btn-nav-action cam-glow-btn" onClick={() => setIsCameraOpen(true)} title="Take photos & videos that save safely to nearby phones">
             <Camera size={15} className="text-emerald" />
-            <span className="hide-on-mobile">Evidence Cam</span>
+            <span className="hide-on-mobile">📸 Save Proof</span>
           </button>
 
-          <button className="btn-nav-action live-pulse-btn" onClick={() => setIsLiveOpen(true)} title="Go Live on YouTube / Reddit via Swarm Relay">
+          <button className="btn-nav-action live-pulse-btn" onClick={() => setIsLiveOpen(true)} title="Go live on YouTube without mobile internet">
             <Video size={15} className="text-red" />
-            <span className="hide-on-mobile">🔴 YouTube Live</span>
+            <span className="hide-on-mobile">🔴 Live Stream</span>
           </button>
 
-          <button className="btn-nav-action" onClick={() => setIsInstallOpen(true)} title="Install on iPhone or Android">
+          <button className="btn-nav-action" onClick={() => setIsInstallOpen(true)} title="Install app onto phone">
             <Smartphone size={15} className="text-emerald" />
-            <span className="hide-on-mobile">Install App</span>
+            <span className="hide-on-mobile">📲 Get App (APK)</span>
           </button>
 
-          <button className="btn-nav-action" onClick={() => setIsShareOpen(true)} title="Zero-Install QR code for peers">
+          <button className="btn-nav-action" onClick={() => setIsShareOpen(true)} title="Show QR code for friends to join instantly">
             <Share2 size={15} />
-            <span className="hide-on-mobile">Zero-Install Beam</span>
+            <span className="hide-on-mobile">🤝 Share App (QR)</span>
           </button>
 
-          <button className="btn-nav-action" onClick={() => setIsNostrOpen(true)} title="BitChat Nostr Global Bridge & Geohash Channels">
+          <button className="btn-nav-action" onClick={() => setIsNostrOpen(true)} title="Sync with global internet backup servers">
             <Globe size={15} className="text-purple" />
-            <span className="hide-on-mobile">Nostr Bridge</span>
+            <span className="hide-on-mobile">🌐 Web Backup</span>
           </button>
 
-          <button className="btn-nav-action" onClick={() => setIsTopologyOpen(true)} title="Inspect Multi-Hop Swarm">
+          <button className="btn-nav-action" onClick={() => setIsTopologyOpen(true)} title="See how messages hop phone-to-phone">
             <Network size={15} />
-            <span className="hide-on-mobile">DTN Swarm</span>
+            <span className="hide-on-mobile">🗺️ How It Works</span>
           </button>
 
-          <button className="btn-nav-action stealth-btn" onClick={() => setInDecoyMode(true)} title="Activate Decoy Calculator (Shortcut: Esc 2x)">
+          <button className="btn-nav-action stealth-btn" onClick={() => setInDecoyMode(true)} title="Switch to normal working calculator screen">
             <EyeOff size={15} />
-            <span className="hide-on-mobile">Decoy</span>
+            <span className="hide-on-mobile">🤫 Hide (Calc)</span>
           </button>
 
-          <button className="btn-nav-danger" onClick={handlePanicWipe} title="Instant Forensic Zeroization">
+          <button className="btn-nav-danger" onClick={handlePanicWipe} title="Clear all messages and history">
             <Trash2 size={15} />
           </button>
         </div>
@@ -217,7 +316,7 @@ export default function App() {
       {wipeAlert && (
         <div className="zeroize-banner">
           <Shield size={16} />
-          <span>FORENSIC ZEROIZATION COMPLETE: ALL ENCRYPTED KEYS AND LOGS DESTROYED</span>
+          <span>ALL MESSAGES & DATA CLEARED SAFELY</span>
         </div>
       )}
 
@@ -231,27 +330,27 @@ export default function App() {
               onClick={() => setActiveTab('feed')}
             >
               <Users size={15} />
-              <span>Mesh Stream</span>
+              <span>💬 Messages</span>
             </button>
             <button 
               className={`view-tab ${activeTab === 'radar' ? 'active' : ''}`}
               onClick={() => setActiveTab('radar')}
             >
               <Radio size={15} />
-              <span>Proximity Radar ({meshData.peers.length})</span>
+              <span>📡 People Nearby ({meshData.peers.length})</span>
             </button>
             <button 
               className={`view-tab ${activeTab === 'acoustic' ? 'active' : ''}`}
               onClick={() => setActiveTab('acoustic')}
             >
               <Volume2 size={15} />
-              <span>Anti-Jam Acoustic Modem</span>
+              <span>🔊 Sound Messages</span>
             </button>
           </div>
 
           <div className="anti-censor-badge">
             <Shield size={12} />
-            <span>NO SIM • NO CELL TOWER • NO INTERNET NEEDED</span>
+            <span>✅ 100% OFFLINE • NO SIM OR INTERNET NEEDED</span>
           </div>
         </div>
 
@@ -260,7 +359,7 @@ export default function App() {
           <div className="feed-layout">
             {/* Left Channel Sidebar */}
             <aside className="channel-sidebar">
-              <div className="sidebar-section-title">ACTIVE CHANNELS</div>
+              <div className="sidebar-section-title">CHANNELS</div>
               <div className="channel-list">
                 {CHANNELS.map(ch => (
                   <button 
@@ -274,31 +373,31 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Swarm Quick Stats */}
+              {/* Network Quick Stats */}
               <div className="swarm-stats-card">
-                <div className="stats-header">TACTICAL SWARM TELEMETRY</div>
+                <div className="stats-header">CONNECTION SUMMARY</div>
                 <div className="stats-row">
-                  <span>Packets Relayed:</span>
+                  <span>Messages Shared:</span>
                   <strong>{meshData.stats.relayed}</strong>
                 </div>
                 <div className="stats-row">
-                  <span>Deduplicated Loops:</span>
+                  <span>Duplicates Filtered:</span>
                   <strong>{meshData.stats.droppedDuplicates}</strong>
                 </div>
                 <div className="stats-row">
-                  <span>Max Hop Depth:</span>
-                  <strong>5 hops</strong>
+                  <span>Crowd Reach:</span>
+                  <strong>Up to 5 phones away</strong>
                 </div>
                 <div className="stats-row">
-                  <span>Transport:</span>
-                  <strong className="text-emerald">Hybrid BLE + Web</strong>
+                  <span>Connection:</span>
+                  <strong className="text-emerald">Bluetooth & Wi-Fi</strong>
                 </div>
               </div>
 
-              {/* Offline Field Guidance */}
+              {/* Quick Hide Notice */}
               <div className="field-guide-card">
-                <div className="guide-title">Field Security Notice:</div>
-                <p>Triple-tap the Haven Shield logo or press <code>Escape</code> twice if inspected by police to instantly switch to the Decoy Calculator.</p>
+                <div className="guide-title">Quick Hide Shortcut:</div>
+                <p>Tap the shield logo 3 times or press <code>Escape</code> twice if someone checks your phone to instantly show a normal calculator.</p>
               </div>
             </aside>
 
@@ -307,11 +406,11 @@ export default function App() {
               <div className="channel-header-bar">
                 <div className="ch-title-wrap">
                   <span className="active-ch-name">{selectedChannel}</span>
-                  <span className="active-ch-sub">Delay-Tolerant Multi-Hop Broadcast</span>
+                  <span className="active-ch-sub">{getChannelSubtitle(selectedChannel)}</span>
                 </div>
                 <div className="crypto-badge">
                   <Lock size={12} />
-                  <span>EPHEMERAL E2E ENCRYPTED</span>
+                  <span>🔒 Private & Encrypted</span>
                 </div>
               </div>
 
@@ -320,8 +419,8 @@ export default function App() {
                 {filteredMessages.length === 0 ? (
                   <div className="empty-messages-placeholder">
                     <Radio size={32} className="pulse-empty" />
-                    <div className="empty-title">Channel is silent</div>
-                    <div className="empty-sub">Send a message or SOS to broadcast across the crowd mesh</div>
+                    <div className="empty-title">No messages in this channel yet</div>
+                    <div className="empty-sub">Type a message below to send it to everyone nearby</div>
                   </div>
                 ) : (
                   filteredMessages.map(msg => {
@@ -336,25 +435,26 @@ export default function App() {
                       >
                         <div className="msg-header">
                           <div className="author-wrap">
-                            <span className={`author-badge ${isMine ? 'mine' : ''}`}>{msg.author}</span>
-                            <span className="author-fingerprint">{msg.authorId}</span>
+                            <span className={`author-badge ${isMine ? 'mine' : ''}`}>
+                              {msg.author} {isMine ? '(You)' : ''}
+                            </span>
                             {msg.tags && msg.tags.map((t, i) => (
-                              <span key={i} className="msg-tag">[{t}]</span>
+                              <span key={i} className="msg-tag">{formatTag(t)}</span>
                             ))}
                           </div>
                           <div className="msg-meta">
-                            <span className="msg-hops">{msg.hops} {msg.hops === 1 ? 'hop' : 'hops'}</span>
-                            <span className="msg-transport">{msg.transport.replace('_', ' ')}</span>
+                            <span className="msg-hops">{formatHops(msg.hops)}</span>
+                            <span className="msg-transport">via {formatTransport(msg.transport)}</span>
                             <span className="msg-time">{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                           </div>
                         </div>
 
-                        <div className="msg-body">{msg.text}</div>
+                        {renderMessageContent(msg)}
 
                         {isSos && (
                           <div className="sos-priority-footer">
                             <AlertTriangle size={13} />
-                            <span>PRIORITY QUEUE: Universal store-and-forward relay override</span>
+                            <span>🚨 URGENT EMERGENCY ALERT • Sent immediately to all nearby phones</span>
                           </div>
                         )}
                       </div>
@@ -363,10 +463,10 @@ export default function App() {
                 )}
               </div>
 
-              {/* Broadcast Input Box */}
+              {/* Message Input Box */}
               <form className="message-input-form" onSubmit={handleSendMessage}>
                 <div className="input-priority-bar">
-                  <span className="priority-label">Priority:</span>
+                  <span className="priority-label">Alert Type:</span>
                   <button 
                     type="button" 
                     className={`priority-btn ${inputPriority === 'NORMAL' ? 'active' : ''}`}
@@ -379,14 +479,14 @@ export default function App() {
                     className={`priority-btn priority-high ${inputPriority === 'HIGH' ? 'active' : ''}`}
                     onClick={() => setInputPriority('HIGH')}
                   >
-                    High
+                    Important
                   </button>
                   <button 
                     type="button" 
                     className={`priority-btn priority-sos ${inputPriority === 'CRITICAL_SOS' ? 'active' : ''}`}
                     onClick={() => setInputPriority('CRITICAL_SOS')}
                   >
-                    Critical SOS
+                    🚨 Urgent SOS
                   </button>
                 </div>
 
@@ -394,13 +494,13 @@ export default function App() {
                   <input 
                     type="text" 
                     className="mesh-text-input"
-                    placeholder={`Transmit message to ${selectedChannel}...`}
+                    placeholder={`Type a message to everyone nearby...`}
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                   />
                   <button type="submit" className="btn-send-mesh" disabled={!inputText.trim()}>
                     <Send size={15} />
-                    <span>Broadcast</span>
+                    <span>Send</span>
                   </button>
                 </div>
               </form>

@@ -73,9 +73,9 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
         if (event.data && event.data.size > 0) {
           setStreamChunksCount(prev => prev + 1);
 
-          // Broadcast live video chunk telemetry across local mesh
+          // Broadcast friendly live video update across nearby phones
           meshEngine.broadcastMessage(
-            `[LIVE_STREAM_BURST] Target: ${streamTarget} | Chunk #${Date.now().toString().slice(-4)} | Size: ${Math.round(event.data.size / 1024)}KB`,
+            `🔴 Live video streaming to ${streamTarget} (clip #${Date.now().toString().slice(-4)}, ${Math.round(event.data.size / 1024)} KB) - passing across nearby phones`,
             '#sos-beacon',
             'CRITICAL_SOS',
             ['LIVE_VIDEO', streamTarget],
@@ -101,9 +101,9 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
   const handlePolicePanic = () => {
     // 1. Immediately cut camera & audio
     stopCamera();
-    // 2. Broadcast critical detention alert to surrounding peers
+    // 2. Broadcast friendly alert to nearby peers
     meshEngine.broadcastMessage(
-      `[EMERGENCY DETENTION] Streamer captured by police. Camera killed. Last footage relayed to swarm.`,
+      `🚨 Streamer closed camera. Video clips were saved safely across nearby phones.`,
       '#sos-beacon',
       'CRITICAL_SOS',
       ['DETENTION_ALERT']
@@ -121,20 +121,20 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
           <div className="livestream-title-box">
             <Radio size={22} className="text-red pulse-icon" />
             <div>
-              <div className="modal-title">LIVE SWARM STREAM TO YOUTUBE & REDDIT</div>
-              <div className="modal-subtitle">Multi-hop video relay: Streams out through the crowd to perimeter internet gateways</div>
+              <div className="modal-title">GO LIVE ON YOUTUBE (WITHOUT INTERNET)</div>
+              <div className="modal-subtitle">Video hops from phone to phone across the crowd until it reaches working internet</div>
             </div>
           </div>
           <button className="btn-modal-close" onClick={onClose}><X size={18} /></button>
         </div>
 
-        {/* Tactical Viewfinder */}
+        {/* Viewfinder */}
         <div className="viewfinder-container">
           {cameraError ? (
             <div className="camera-error-box">
               <VideoOff size={36} className="text-red" />
               <p>{cameraError}</p>
-              <button className="btn-retry-camera" onClick={startCameraPreview}>Retry Camera Permission</button>
+              <button className="btn-retry-camera" onClick={startCameraPreview}>Grant Camera Permission</button>
             </div>
           ) : (
             <div className="video-wrapper">
@@ -146,16 +146,16 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
                 className="live-video-element"
               />
 
-              {/* Viewfinder Tactical HUD Overlay */}
+              {/* Viewfinder Overlay */}
               <div className="hud-overlay">
                 <div className="hud-top">
                   <div className={`hud-badge ${isStreaming ? 'live' : 'standby'}`}>
                     <span className="dot-pulse"></span>
-                    <span>{isStreaming ? 'SWARM STREAMING LIVE' : 'STANDBY'}</span>
+                    <span>{isStreaming ? 'STREAMING LIVE' : 'READY TO STREAM'}</span>
                   </div>
                   {isStreaming && (
                     <div className="hud-chunk-counter">
-                      <span>RELAYED CHUNKS: <strong>{streamChunksCount}</strong></span>
+                      <span>VIDEO CLIPS SENT: <strong>{streamChunksCount}</strong></span>
                     </div>
                   )}
                 </div>
@@ -163,7 +163,7 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
                 <div className="hud-bottom">
                   <div className="hud-anti-forensic-tag">
                     <Shield size={12} className="text-emerald" />
-                    <span>ZERO-LOCAL-STORAGE: Video stream evaporates to swarm immediately</span>
+                    <span>SAFE: Video is not stored on this phone. It hops directly to other phones.</span>
                   </div>
                 </div>
               </div>
@@ -171,21 +171,21 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
           )}
         </div>
 
-        {/* Swarm Workaround Explainer */}
+        {/* Simple 3-step explanation */}
         <div className="stream-explainer-card">
-          <div className="ex-title">How Going Live Works During Internet Shutdowns:</div>
+          <div className="ex-title">How this works when mobile internet is cut:</div>
           <div className="ex-grid">
             <div className="ex-step">
               <span className="ex-num">1</span>
-              <div><strong>Micro-Burst Video:</strong> Your camera compresses video into 2-second chunks.</div>
+              <div><strong>Short Clips:</strong> Your camera captures small 2-second video clips.</div>
             </div>
             <div className="ex-step">
               <span className="ex-num">2</span>
-              <div><strong>Crowd Bucket Brigade:</strong> Chunks hop phone-to-phone across the crowd via Wi-Fi/Bluetooth.</div>
+              <div><strong>Passes Between Phones:</strong> Nearby phones pass the clips to each other using Bluetooth and Wi-Fi.</div>
             </div>
             <div className="ex-step">
               <span className="ex-num">3</span>
-              <div><strong>Perimeter YouTube Ingest:</strong> Nodes at the edge of the blackout push the stream directly to YouTube RTMP servers!</div>
+              <div><strong>Goes Live:</strong> As soon as a clip reaches someone with working internet, it uploads immediately!</div>
             </div>
           </div>
         </div>
@@ -193,13 +193,13 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
         {/* Stream Settings & Targets */}
         <div className="stream-controls-section">
           <div className="target-selector-row">
-            <span className="control-label">Broadcast Target:</span>
+            <span className="control-label">Stream Platform:</span>
             <div className="target-btn-group">
               <button 
                 className={`target-btn ${streamTarget === 'YOUTUBE' ? 'active' : ''}`}
                 onClick={() => setStreamTarget('YOUTUBE')}
               >
-                YouTube Live (RTMP)
+                YouTube Live
               </button>
               <button 
                 className={`target-btn ${streamTarget === 'REDDIT' ? 'active' : ''}`}
@@ -211,45 +211,45 @@ export default function LiveStreamModal({ isOpen, onClose, onPanicToDecoy }) {
                 className={`target-btn ${streamTarget === 'TWITCH' ? 'active' : ''}`}
                 onClick={() => setStreamTarget('TWITCH')}
               >
-                Twitch / RTMP Ingest
+                Twitch Live
               </button>
             </div>
           </div>
 
           <div className="stream-key-input-row">
-            <label className="control-label">YouTube RTMP Ingest Key:</label>
+            <label className="control-label">Stream Key (Optional):</label>
             <input 
               type="password" 
               className="stream-key-field"
               value={streamKey}
               onChange={(e) => setStreamKey(e.target.value)}
-              placeholder="rtmp://a.rtmp.youtube.com/live2/..."
+              placeholder="Paste YouTube stream key or leave default..."
             />
           </div>
         </div>
 
-        {/* Action Buttons & Police Panic Trigger */}
+        {/* Action Buttons */}
         <div className="livestream-action-row">
           {!isStreaming ? (
             <button className="btn-start-stream" onClick={startLiveSwarmBroadcast}>
               <Play size={16} />
-              <span>START LIVE SWARM BROADCAST</span>
+              <span>START LIVE STREAM</span>
             </button>
           ) : (
             <button className="btn-stop-stream" onClick={stopLiveSwarmBroadcast}>
               <Square size={16} />
-              <span>PAUSE LIVE STREAM</span>
+              <span>STOP LIVE STREAM</span>
             </button>
           )}
 
-          {/* CRITICAL ANTI-CONFISCATION PANIC TRIGGER */}
+          {/* Quick Disguise Button */}
           <button 
             className="btn-police-panic" 
             onClick={handlePolicePanic}
-            title="Police are approaching: Instantly cuts stream and turns screen into working calculator"
+            title="Instantly stop video and open a working calculator"
           >
             <EyeOff size={16} />
-            <span>POLICE APPROACHING (PANIC TO CALCULATOR)</span>
+            <span>QUICK HIDE (SWITCH TO CALCULATOR)</span>
           </button>
         </div>
       </div>

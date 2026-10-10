@@ -74,14 +74,14 @@ export class MeshEngine {
       if (saved) return JSON.parse(saved);
     } catch (_) {}
 
-    // Default seed emergency situational awareness messages
+    // Default friendly emergency community messages
     return [
       {
         id: 'msg-seed-01',
         channel: '#sos-beacon',
-        author: 'MEDIC-04',
+        author: 'Dr. Sarah (Medic)',
         authorId: '0x99A1F4B2',
-        text: 'MEDICAL AID STATION active at Patel Chowk side gate. We have saline, eye wash for tear gas, and bandages.',
+        text: 'First Aid & Water station is active at Patel Chowk side gate. We have clean water, eye wash for tear gas, and bandages.',
         priority: 'CRITICAL_SOS',
         timestamp: Date.now() - 1000 * 60 * 18,
         ttl: 4,
@@ -93,9 +93,9 @@ export class MeshEngine {
       {
         id: 'msg-seed-02',
         channel: '#checkpoints',
-        author: 'SCOUT-19',
+        author: 'Volunteer Scout',
         authorId: '0x7B28E109',
-        text: 'Heavy barricade installed at Janpath roundabout. Crowd diverted towards Tolstoy Marg. Keep moving in groups.',
+        text: 'Police barricade set up at Janpath roundabout. Tolstoy Marg road is open and safe to walk through in groups.',
         priority: 'HIGH',
         timestamp: Date.now() - 1000 * 60 * 11,
         ttl: 3,
@@ -107,9 +107,9 @@ export class MeshEngine {
       {
         id: 'msg-seed-03',
         channel: '#all-mesh',
-        author: 'VALKYRIE-02',
+        author: 'Alex (Nearby)',
         authorId: '0x43C9D011',
-        text: 'Mobile network is completely down within 3km radius. Switch all local relays to Bluetooth & Wi-Fi Direct mesh.',
+        text: 'Mobile network and internet are down in this area. Keep your Bluetooth & Wi-Fi switched ON so our phones can pass messages to each other!',
         priority: 'NORMAL',
         timestamp: Date.now() - 1000 * 60 * 5,
         ttl: 5,
@@ -131,20 +131,20 @@ export class MeshEngine {
     return [
       {
         id: 'node-01',
-        callsign: 'MEDIC-04',
-        role: 'Field Medic',
+        callsign: 'Dr. Sarah (Medic)',
+        role: 'First Aid Volunteer',
         distanceMeters: 45,
         rssi: -58,
         hops: 1,
         battery: 84,
-        transport: 'BLE',
+        transport: 'Bluetooth',
         isEmergency: true,
         lastSeen: Date.now() - 4000
       },
       {
         id: 'node-02',
-        callsign: 'SCOUT-19',
-        role: 'Perimeter Scout',
+        callsign: 'Volunteer Scout',
+        role: 'Area Watcher',
         distanceMeters: 120,
         rssi: -74,
         hops: 2,
@@ -155,37 +155,37 @@ export class MeshEngine {
       },
       {
         id: 'node-03',
-        callsign: 'HAVEN-RELAY',
-        role: 'Autonomous Hotspot Node',
+        callsign: 'Community Hotspot',
+        role: 'Phone Hotspot',
         distanceMeters: 18,
         rssi: -42,
         hops: 1,
         battery: 99,
-        transport: 'Hotspot Web',
+        transport: 'Wi-Fi Hotspot',
         isEmergency: false,
         lastSeen: Date.now() - 1000
       },
       {
         id: 'node-04',
-        callsign: 'ORION-88',
-        role: 'Water & Supplies',
+        callsign: 'Water Supply Team',
+        role: 'Supplies Station',
         distanceMeters: 210,
         rssi: -88,
         hops: 3,
         battery: 45,
-        transport: 'Acoustic / Sound',
+        transport: 'Sound Wave',
         isEmergency: false,
         lastSeen: Date.now() - 15000
       },
       {
         id: 'node-05',
-        callsign: 'CITADEL-01',
-        role: 'Crowd Safety Guide',
+        callsign: 'Safety Guide',
+        role: 'Walking Guide',
         distanceMeters: 80,
         rssi: -66,
         hops: 2,
         battery: 78,
-        transport: 'BLE',
+        transport: 'Bluetooth',
         isEmergency: false,
         lastSeen: Date.now() - 6000
       }

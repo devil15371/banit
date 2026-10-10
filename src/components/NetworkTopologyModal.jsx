@@ -29,8 +29,8 @@ export default function NetworkTopologyModal({ isOpen, onClose, peers, identity 
           <div className="topology-title-box">
             <Network size={20} className="icon-emerald" />
             <div>
-              <div className="modal-title">MULTI-HOP MESH TOPOLOGY & DTN CASCADE</div>
-              <div className="modal-subtitle">Visualizing Store-and-Forward packet hopping across physical crowds</div>
+              <div className="modal-title">HOW MESSAGES TRAVEL PHONE-TO-PHONE</div>
+              <div className="modal-subtitle">See how messages hop safely between phones without internet or cell towers</div>
             </div>
           </div>
           <button className="btn-modal-close" onClick={onClose}><X size={18} /></button>
@@ -79,7 +79,7 @@ export default function NetworkTopologyModal({ isOpen, onClose, peers, identity 
               >
                 <div className="packet-dot"></div>
                 <div className="packet-glow"></div>
-                <div className="packet-badge">TTL: {5 - animatingHop}</div>
+                <div className="packet-badge">Hop {animatingHop + 1}</div>
               </div>
             )}
           </div>
@@ -93,35 +93,35 @@ export default function NetworkTopologyModal({ isOpen, onClose, peers, identity 
             disabled={animatingHop !== null}
           >
             <Play size={15} />
-            <span>{animatingHop !== null ? `Simulating Hop ${animatingHop + 1}...` : 'Simulate Packet Hop Cascade'}</span>
+            <span>{animatingHop !== null ? `Passing to Phone ${animatingHop + 1}...` : '▶️ Test: Watch a Message Hop Across Phones'}</span>
           </button>
 
           <div className="topology-stats-pill">
-            <span>Deduplication Filter: <strong>Active</strong></span>
-            <span>Max TTL: <strong>5 Hops</strong></span>
-            <span>Delivery Reliability: <strong>99.2%</strong></span>
+            <span>Duplicates Ignored: <strong>Yes</strong></span>
+            <span>Reach: <strong>5 Phones</strong></span>
+            <span>Delivery: <strong>Instant & Free</strong></span>
           </div>
         </div>
 
         <div className="topology-explainer-card">
-          <div className="explainer-title">How Store-and-Forward (DTN) Beats Cellular Blackouts:</div>
+          <div className="explainer-title">How phones talk to each other without internet:</div>
           <div className="explainer-grid">
             <div className="grid-item">
               <span className="num">1</span>
               <div>
-                <strong>Zero Cellular Towers:</strong> Packets bounce peer-to-peer across phones. No central telecom infrastructure is touched.
+                <strong>Direct Phone-to-Phone:</strong> Messages jump directly between phones over Bluetooth and Wi-Fi. No phone towers needed.
               </div>
             </div>
             <div className="grid-item">
               <span className="num">2</span>
               <div>
-                <strong>Physical Data Mules:</strong> When two clusters are separated by empty ground, phones in walking protesters' pockets cache messages and sync when they reach the next group.
+                <strong>Passed in Pockets:</strong> As people walk around, their phones quietly pass messages to each other so everyone stays informed.
               </div>
             </div>
             <div className="grid-item">
               <span className="num">3</span>
               <div>
-                <strong>Broadcast Storm Defense:</strong> Each node remembers seen packet hashes, dropping duplicates immediately to protect phone battery life.
+                <strong>Saves Battery:</strong> Your phone only receives each message once, keeping your battery safe and lasting all day.
               </div>
             </div>
           </div>

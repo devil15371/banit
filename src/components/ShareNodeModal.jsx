@@ -51,8 +51,8 @@ export default function ShareNodeModal({ isOpen, onClose }) {
           <div className="share-title-box">
             <Wifi size={20} className="icon-cyan" />
             <div>
-              <div className="modal-title">ZERO-INSTALL LOCAL BEAM PORTAL</div>
-              <div className="modal-subtitle">Allows nearby people to join the mesh immediately without app stores</div>
+              <div className="modal-title">SHARE WITH NEARBY FRIENDS (QR CODE)</div>
+              <div className="modal-subtitle">Anyone can scan this code with their phone camera to open and use the app instantly</div>
             </div>
           </div>
           <button className="btn-modal-close" onClick={onClose}><X size={18} /></button>
@@ -66,7 +66,7 @@ export default function ShareNodeModal({ isOpen, onClose }) {
             ) : (
               <div className="qr-placeholder">Generating QR...</div>
             )}
-            <div className="qr-caption">Scan with any phone camera to join</div>
+            <div className="qr-caption">Scan with any phone camera to open</div>
           </div>
 
           {/* Quick Connection Details */}
@@ -75,24 +75,24 @@ export default function ShareNodeModal({ isOpen, onClose }) {
               <div className="step-item">
                 <span className="step-badge">1</span>
                 <div>
-                  <strong>Turn On Local Wi-Fi Hotspot:</strong>
-                  <div className="step-desc">Name it <code>HAVEN-MESH-EMERGENCY</code> (No password needed).</div>
+                  <strong>Turn On Your Hotspot:</strong>
+                  <div className="step-desc">Turn on your phone's personal hotspot so friends can connect.</div>
                 </div>
               </div>
 
               <div className="step-item">
                 <span className="step-badge">2</span>
                 <div>
-                  <strong>Crowd Connects & Scans:</strong>
-                  <div className="step-desc">Peers join your Wi-Fi and open their phone browser.</div>
+                  <strong>Scan QR Code:</strong>
+                  <div className="step-desc">Friends point their phone camera at this QR code.</div>
                 </div>
               </div>
 
               <div className="step-item">
                 <span className="step-badge">3</span>
                 <div>
-                  <strong>Zero-Installation Chatting:</strong>
-                  <div className="step-desc">No Apple App Store or Google Play account required! Works 100% offline.</div>
+                  <strong>Instant Chatting:</strong>
+                  <div className="step-desc">The app opens in their browser immediately. No download needed!</div>
                 </div>
               </div>
             </div>

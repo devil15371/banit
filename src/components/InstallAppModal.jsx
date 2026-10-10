@@ -54,8 +54,8 @@ export default function InstallAppModal({ isOpen, onClose }) {
           <div className="install-title-box">
             <Smartphone size={22} className="icon-emerald" />
             <div>
-              <div className="modal-title">INSTALL ON MOBILE (ANDROID & APPLE iOS)</div>
-              <div className="modal-subtitle">Bypass App Store & Google Play censorship with direct offline installation</div>
+              <div className="modal-title">INSTALL APP ON YOUR PHONE</div>
+              <div className="modal-subtitle">Works directly on iPhone & Android without needing internet or app store sign-in</div>
             </div>
           </div>
           <button className="btn-modal-close" onClick={onClose}><X size={18} /></button>
@@ -68,14 +68,14 @@ export default function InstallAppModal({ isOpen, onClose }) {
             onClick={() => setActivePlatformTab('ios')}
           >
             <Apple size={16} />
-            <span>Apple iPhone & iPad</span>
+            <span>iPhone & iPad</span>
           </button>
           <button 
             className={`platform-tab ${activePlatformTab === 'android' ? 'active' : ''}`}
             onClick={() => setActivePlatformTab('android')}
           >
             <Smartphone size={16} />
-            <span>Android (APK & PWA)</span>
+            <span>Android Phone</span>
           </button>
         </div>
 
@@ -85,7 +85,7 @@ export default function InstallAppModal({ isOpen, onClose }) {
             <div className="platform-badge-row">
               <span className="badge-immune">
                 <ShieldCheck size={13} />
-                Immune to Apple App Store Bans & Takedowns
+                Direct Install • No App Store Account Needed
               </span>
             </div>
 
@@ -94,7 +94,7 @@ export default function InstallAppModal({ isOpen, onClose }) {
                 <span className="step-num">1</span>
                 <div>
                   <strong>Open in Safari:</strong>
-                  <p>Visit this page in Safari on your iPhone.</p>
+                  <p>Open this webpage in Safari on your iPhone.</p>
                 </div>
               </div>
 
@@ -105,7 +105,7 @@ export default function InstallAppModal({ isOpen, onClose }) {
                     <Share size={15} className="text-cyan" />
                     <strong>Tap the Share Button:</strong>
                   </div>
-                  <p>Tap the box with the upward arrow at the bottom of Safari.</p>
+                  <p>Tap the square box with the arrow pointing up at the bottom of your screen.</p>
                 </div>
               </div>
 
@@ -114,7 +114,7 @@ export default function InstallAppModal({ isOpen, onClose }) {
                 <div>
                   <div className="step-icon-label">
                     <PlusSquare size={15} className="text-emerald" />
-                    <strong>Select "Add to Home Screen":</strong>
+                    <strong>Tap "Add to Home Screen":</strong>
                   </div>
                   <p>Scroll down and tap <strong>Add to Home Screen</strong>, then tap <strong>Add</strong>.</p>
                 </div>
@@ -124,7 +124,7 @@ export default function InstallAppModal({ isOpen, onClose }) {
             <div className="inst-result-card">
               <Check size={16} className="text-emerald" />
               <div>
-                <strong>Result on iPhone:</strong> Appears as a standalone full-screen native app on your home screen with its own tactical icon, working completely offline without internet!
+                <strong>Ready to use:</strong> The app will appear on your phone home screen just like a regular app, and will work completely offline even if internet is cut!
               </div>
             </div>
           </div>
@@ -136,35 +136,35 @@ export default function InstallAppModal({ isOpen, onClose }) {
             <div className="platform-badge-row">
               <span className="badge-immune">
                 <ShieldCheck size={13} />
-                No Google Play Account or Approval Needed
+                Direct Install • Works Completely Offline
               </span>
             </div>
 
             {/* Method A: One-Tap PWA */}
             <div className="android-method-box">
-              <div className="method-title">Method 1: Direct 1-Tap Browser Install (Recommended)</div>
-              <p>Installs directly onto your phone screen without downloading any 100MB files.</p>
+              <div className="method-title">Option 1: Add to Home Screen (Instant 1-Tap)</div>
+              <p>Adds the app icon directly to your phone screen instantly.</p>
               <button className="btn-install-pwa" onClick={handleInstallClick}>
                 <Download size={15} />
-                <span>{isInstalled ? 'App Already Installed!' : 'Install Haven Mesh to Android Phone'}</span>
+                <span>{isInstalled ? 'App Already Installed!' : 'Add to Home Screen'}</span>
               </button>
             </div>
 
             {/* Method B: Native APK */}
             <div className="android-method-box">
-              <div className="method-title">Method 2: Standalone Native Android APK (Offline Sideload)</div>
-              <p>Direct standalone installable <code>.apk</code> compiled directly on your machine. Share it over Bluetooth or USB!</p>
-              <a href="/haven-mesh.apk" download="haven-mesh-crisis.apk" className="btn-install-pwa btn-apk-download-link">
+              <div className="method-title">Option 2: Download Android App (.apk File)</div>
+              <p>Download the standalone install file. You can also share this file with friends over Bluetooth or flash drive!</p>
+              <a href="./haven-mesh.apk" download="haven-mesh-crisis.apk" className="btn-install-pwa btn-apk-download-link">
                 <Download size={15} />
-                <span>Download Standalone haven-mesh.apk (4.0 MB)</span>
+                <span>Download Android App (.apk - 4.0 MB)</span>
               </a>
-              <div className="apk-desc" style={{ marginTop: '8px' }}>Native project ready in <code>android/</code> directory with Bluetooth, Audio, and Hotspot hardware permissions.</div>
+              <div className="apk-desc" style={{ marginTop: '8px' }}>Once downloaded, tap the file in your downloads to install.</div>
             </div>
           </div>
         )}
 
         <div className="install-footer">
-          <p>Both methods ensure you have an independent, censorship-resistant tool on your mobile device ready before any crisis occurs.</p>
+          <p>Once installed, the app stays on your phone and works anytime even if cellular towers and internet are turned off.</p>
         </div>
       </div>
     </div>

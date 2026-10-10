@@ -75,9 +75,9 @@ export default function SosModal({ isOpen, onClose, onDispatchSos }) {
           <div className="sos-header-left">
             <span className="sos-blinking-pill">
               <span className="sos-pulse-circle"></span>
-              CRITICAL EMERGENCY BEACON
+              EMERGENCY SOS ALERT
             </span>
-            <div className="sos-subtitle">Floods all mesh hops at maximum priority queue</div>
+            <div className="sos-subtitle">Instantly alerts everyone with phones nearby</div>
           </div>
           <button className="btn-modal-close" onClick={onClose}><X size={18} /></button>
         </div>
@@ -105,7 +105,7 @@ export default function SosModal({ isOpen, onClose, onDispatchSos }) {
         <div className="sos-input-group">
           <label className="sos-input-label">
             <MapPin size={14} />
-            <span>Landmark / Location Detail (Optional)</span>
+            <span>Where are you? (Optional Landmark)</span>
           </label>
           <input 
             type="text" 
@@ -124,7 +124,7 @@ export default function SosModal({ isOpen, onClose, onDispatchSos }) {
               onChange={(e) => setPlayAudioAlarm(e.target.checked)} 
             />
             <Bell size={14} />
-            <span>Play Audible Morse SOS Siren</span>
+            <span>Play Loud Alarm Sound</span>
           </label>
 
           <button 
@@ -133,7 +133,7 @@ export default function SosModal({ isOpen, onClose, onDispatchSos }) {
             onClick={() => setIsStrobeActive(!isStrobeActive)}
           >
             <Zap size={14} />
-            <span>{isStrobeActive ? 'Stop Optical Strobe' : 'Flash Visual SOS Strobe'}</span>
+            <span>{isStrobeActive ? 'Stop Flashing Screen' : 'Flash Red Screen Light'}</span>
           </button>
         </div>
 
@@ -141,7 +141,7 @@ export default function SosModal({ isOpen, onClose, onDispatchSos }) {
           <button className="btn-sos-cancel" onClick={onClose}>Cancel</button>
           <button className="btn-sos-transmit" onClick={handleBroadcast}>
             <AlertTriangle size={18} />
-            <span>TRANSMIT SOS BEACON TO MESH</span>
+            <span>SEND EMERGENCY ALERT NOW</span>
           </button>
         </div>
       </div>

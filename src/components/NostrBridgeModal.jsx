@@ -25,8 +25,8 @@ export default function NostrBridgeModal({ isOpen, onClose, onSelectGeohashChann
           <div className="nostr-title-box">
             <Globe size={22} className="icon-purple" />
             <div>
-              <div className="modal-title">BITCHAT NOSTR & GEOHASH GLOBAL BRIDGE</div>
-              <div className="modal-subtitle">Dual-transport protocol: Offline local mesh linked to censorship-resistant Nostr relays</div>
+              <div className="modal-title">GLOBAL WEB BACKUP & AREA CHANNELS</div>
+              <div className="modal-subtitle">When internet is available, messages sync safely with decentralized servers worldwide</div>
             </div>
           </div>
           <button className="btn-modal-close" onClick={onClose}><X size={18} /></button>
@@ -38,21 +38,21 @@ export default function NostrBridgeModal({ isOpen, onClose, onSelectGeohashChann
             <div className="dt-col mesh-col">
               <Radio size={16} className="text-emerald" />
               <div>
-                <strong>Local Blackout Zone (Zero-Internet)</strong>
-                <p>Hotspot Web + BLE + Ultrasonic Audio Modems</p>
+                <strong>Local Crowd (No Internet)</strong>
+                <p>Phones connect directly via Bluetooth & Wi-Fi</p>
               </div>
             </div>
 
             <div className="dt-arrow">
               <ArrowRightLeft size={16} />
-              <span>Perimeter Bridge</span>
+              <span>Bridge</span>
             </div>
 
             <div className="dt-col nostr-col">
               <Globe size={16} className="text-purple" />
               <div>
-                <strong>Global Nostr Fallback (Internet / Starlink)</strong>
-                <p>Decentralized relays broadcast world alerts</p>
+                <strong>Worldwide Web Backup</strong>
+                <p>Public servers outside the shutdown area</p>
               </div>
             </div>
           </div>
@@ -60,7 +60,7 @@ export default function NostrBridgeModal({ isOpen, onClose, onSelectGeohashChann
 
         {/* Nostr Relay Status */}
         <div className="relay-status-section">
-          <div className="section-heading">Connected Nostr Relays ({nostrStatus.connectedRelays}/{nostrStatus.totalRelays})</div>
+          <div className="section-heading">Connected Web Servers ({nostrStatus.connectedRelays}/{nostrStatus.totalRelays})</div>
           <div className="relay-list">
             {nostrStatus.relayList.map((relayUrl, idx) => (
               <div key={idx} className="relay-item">
@@ -69,18 +69,18 @@ export default function NostrBridgeModal({ isOpen, onClose, onSelectGeohashChann
                   <code>{relayUrl}</code>
                 </div>
                 <span className="relay-badge">
-                  {nostrStatus.isOnline ? 'Bridge Ready' : 'Awaiting Perimeter Signal'}
+                  {nostrStatus.isOnline ? 'Connected' : 'Waiting for Internet'}
                 </span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Geohash Location Channels (from BitChat) */}
+        {/* Geohash Location Channels */}
         <div className="geohash-section">
           <div className="section-heading">
             <MapPin size={14} className="text-cyan" />
-            <span>BitChat Geohash Crisis Channels (Location without GPS Leaks)</span>
+            <span>Local Neighborhood Channels (Private & without GPS tracking)</span>
           </div>
           <div className="geohash-grid">
             {TACTICAL_GEOHASH_ZONES.map(zone => {
@@ -107,7 +107,7 @@ export default function NostrBridgeModal({ isOpen, onClose, onSelectGeohashChann
 
         <div className="nostr-footer-note">
           <Shield size={13} className="text-emerald" />
-          <span>Compatible with BitChat's private envelope relay specification and Nostr NIP-01 decentralized relays.</span>
+          <span>Messages are end-to-end encrypted and decentralized across multiple independent servers.</span>
         </div>
       </div>
     </div>
